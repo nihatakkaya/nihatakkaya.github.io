@@ -150,10 +150,11 @@ export default function Navbar() {
         initial={{ y: 80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 lg:hidden"
+        className="fixed bottom-4 left-0 right-0 z-50 lg:hidden flex justify-center px-4"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         <div
-          className="rounded-full px-2.5 py-2.5 flex items-center gap-1"
+          className="rounded-full px-3 py-2.5 flex items-center gap-0.5 sm:gap-1 sm:px-4 w-auto max-w-full"
           style={{
             background: "rgba(8, 12, 24, 0.92)",
             backdropFilter: "blur(32px)",
@@ -171,7 +172,7 @@ export default function Navbar() {
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
                 whileTap={{ scale: 0.85 }}
-                className="relative p-3 sm:p-3.5 rounded-full"
+                className="relative p-2.5 sm:p-3 rounded-full flex-shrink-0"
                 aria-label={t.nav[item.key]}
               >
                 {isActive && (
@@ -188,7 +189,7 @@ export default function Navbar() {
                 )}
 
                 <Icon
-                  size={22}
+                  size={20}
                   className={`relative z-10 transition-all duration-300 ${
                     isActive
                       ? "text-neon-cyan drop-shadow-[0_0_12px_rgba(0,240,255,0.8)]"
@@ -199,14 +200,17 @@ export default function Navbar() {
             );
           })}
 
+          {/* Divider */}
+          <div className="w-px h-5 bg-neon-cyan/15 mx-0.5 flex-shrink-0" />
+
           {/* Mobile lang toggle */}
           <motion.button
             onClick={toggleLang}
             whileTap={{ scale: 0.85 }}
-            className="relative p-3 sm:p-3.5 rounded-full"
+            className="relative p-2.5 sm:p-3 rounded-full flex-shrink-0"
             aria-label="Toggle Language"
           >
-            <Globe size={18} className="relative z-10 text-gray-500 transition-all duration-300" />
+            <Globe size={16} className="relative z-10 text-gray-500 transition-all duration-300" />
           </motion.button>
         </div>
       </motion.nav>
