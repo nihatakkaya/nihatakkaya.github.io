@@ -23,7 +23,7 @@ export default function ScrollToTop() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-20 lg:bottom-8 right-6 z-50 p-3 rounded-full glass glow-border text-neon-cyan hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-shadow"
+          className="fixed bottom-8 right-6 z-50 p-3 rounded-full glass glow-border text-neon-cyan hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-shadow"
           aria-label="Scroll to top"
         >
           <ChevronUp size={20} />

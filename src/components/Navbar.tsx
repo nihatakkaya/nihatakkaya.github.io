@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Home, Wrench, FolderOpen, GraduationCap, Mail, Globe } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Home, Wrench, FolderOpen, GraduationCap, Mail, Globe, Menu, X } from "lucide-react";
 import { useActiveSection } from "@/lib/hooks";
 import { useLang } from "@/lib/i18n";
 
@@ -18,12 +19,23 @@ const navKeys = [
 export default function Navbar() {
   const activeSection = useActiveSection();
   const { lang, setLang, t } = useLang();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMobileOpen(false);
   };
 
   const toggleLang = () => setLang(lang === "en" ? "tr" : "en");
+
+  // Close mobile menu on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (mobileOpen) setMobileOpen(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [mobileOpen]);
 
   return (
     <>
@@ -145,75 +157,174 @@ export default function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile bottom navbar */}
-      <motion.nav
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="fixed bottom-4 left-0 right-0 z-50 lg:hidden flex justify-center px-4"
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
-      >
-        <div
-          className="rounded-full px-3 py-2.5 flex items-center gap-0.5 sm:gap-1 sm:px-4 w-auto max-w-full"
+      {/* Mobile top navbar - hamburger menu */}
+      <div className="lg:hidden">
+        {/* Hamburger button - fixed top right */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="fixed top-4 right-4 z-[60] p-3 rounded-xl transition-all duration-300"
           style={{
-            background: "rgba(8, 12, 24, 0.92)",
-            backdropFilter: "blur(32px)",
-            WebkitBackdropFilter: "blur(32px)",
-            border: "1px solid rgba(0, 240, 255, 0.2)",
-            boxShadow: "0 0 50px rgba(0, 240, 255, 0.1), 0 -4px 28px rgba(0, 0, 0, 0.4)",
+            background: mobileOpen ? "rgba(0, 240, 255, 0.12)" : "rgba(8, 12, 24, 0.9)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: `1px solid ${mobileOpen ? "rgba(0, 240, 255, 0.4)" : "rgba(0, 240, 255, 0.2)"}`,
+            boxShadow: mobileOpen
+              ? "0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 240, 255, 0.1)"
+              : "0 0 20px rgba(0, 240, 255, 0.08), 0 4px 20px rgba(0, 0, 0, 0.3)",
           }}
+          aria-label="Toggle menu"
         >
-          {navKeys.map((item) => {
-            const Icon = iconMap[item.icon];
-            const isActive = activeSection === item.id;
-
-            return (
-              <motion.button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                whileTap={{ scale: 0.85 }}
-                className="relative p-2.5 sm:p-3 rounded-full flex-shrink-0"
-                aria-label={t.nav[item.key]}
+          <AnimatePresence mode="wait">
+            {mobileOpen ? (
+              <motion.div
+                key="close"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeMobileNav"
-                    className="absolute inset-0 rounded-full"
-                    style={{
-                      background: "radial-gradient(circle, rgba(0,240,255,0.25) 0%, transparent 70%)",
-                      border: "1px solid rgba(0, 240, 255, 0.5)",
-                      boxShadow: "0 0 26px rgba(0, 240, 255, 0.35), inset 0 0 14px rgba(0, 240, 255, 0.12)",
+                <X size={22} className="text-neon-cyan" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="menu"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Menu size={22} className="text-neon-cyan" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
+
+        {/* Mobile dropdown menu */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="fixed inset-0 z-[55] bg-navy-900/60 backdrop-blur-sm"
+                onClick={() => setMobileOpen(false)}
+              />
+
+              {/* Menu panel */}
+              <motion.nav
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                className="fixed top-16 right-4 left-4 z-[58] rounded-2xl overflow-hidden"
+                style={{
+                  background: "rgba(8, 12, 24, 0.95)",
+                  backdropFilter: "blur(32px)",
+                  WebkitBackdropFilter: "blur(32px)",
+                  border: "1px solid rgba(0, 240, 255, 0.2)",
+                  boxShadow:
+                    "0 0 50px rgba(0, 240, 255, 0.1), 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(0, 240, 255, 0.1)",
+                }}
+              >
+                <div className="p-4 space-y-1">
+                  {navKeys.map((item, index) => {
+                    const Icon = iconMap[item.icon];
+                    const isActive = activeSection === item.id;
+                    const label = t.nav[item.key];
+
+                    return (
+                      <motion.button
+                        key={item.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                        onClick={() => scrollTo(item.id)}
+                        className="relative w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200"
+                        style={{
+                          background: isActive ? "rgba(0, 240, 255, 0.08)" : "transparent",
+                          border: isActive
+                            ? "1px solid rgba(0, 240, 255, 0.25)"
+                            : "1px solid transparent",
+                        }}
+                      >
+                        <div
+                          className="flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0"
+                          style={{
+                            background: isActive
+                              ? "rgba(0, 240, 255, 0.15)"
+                              : "rgba(0, 240, 255, 0.05)",
+                            border: `1px solid ${isActive ? "rgba(0, 240, 255, 0.3)" : "rgba(0, 240, 255, 0.08)"}`,
+                          }}
+                        >
+                          <Icon
+                            size={20}
+                            className={`transition-all duration-300 ${
+                              isActive
+                                ? "text-neon-cyan drop-shadow-[0_0_12px_rgba(0,240,255,0.8)]"
+                                : "text-gray-500"
+                            }`}
+                          />
+                        </div>
+                        <span
+                          className={`text-base font-medium transition-colors duration-200 ${
+                            isActive ? "text-neon-cyan" : "text-gray-400"
+                          }`}
+                        >
+                          {label}
+                        </span>
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeMobileIndicator"
+                            className="ml-auto w-2 h-2 rounded-full bg-neon-cyan"
+                            style={{
+                              boxShadow: "0 0 10px rgba(0, 240, 255, 0.6)",
+                            }}
+                          />
+                        )}
+                      </motion.button>
+                    );
+                  })}
+
+                  {/* Divider */}
+                  <div className="h-px bg-neon-cyan/10 mx-2 my-2" />
+
+                  {/* Language toggle */}
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: navKeys.length * 0.05 }}
+                    onClick={() => {
+                      toggleLang();
+                      setMobileOpen(false);
                     }}
-                    transition={{ type: "spring", stiffness: 400, damping: 28, mass: 0.7 }}
-                  />
-                )}
-
-                <Icon
-                  size={20}
-                  className={`relative z-10 transition-all duration-300 ${
-                    isActive
-                      ? "text-neon-cyan drop-shadow-[0_0_12px_rgba(0,240,255,0.8)]"
-                      : "text-gray-500"
-                  }`}
-                />
-              </motion.button>
-            );
-          })}
-
-          {/* Divider */}
-          <div className="w-px h-5 bg-neon-cyan/15 mx-0.5 flex-shrink-0" />
-
-          {/* Mobile lang toggle */}
-          <motion.button
-            onClick={toggleLang}
-            whileTap={{ scale: 0.85 }}
-            className="relative p-2.5 sm:p-3 rounded-full flex-shrink-0"
-            aria-label="Toggle Language"
-          >
-            <Globe size={16} className="relative z-10 text-gray-500 transition-all duration-300" />
-          </motion.button>
-        </div>
-      </motion.nav>
+                    className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200"
+                    style={{ background: "transparent" }}
+                  >
+                    <div
+                      className="flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0"
+                      style={{
+                        background: "rgba(0, 240, 255, 0.05)",
+                        border: "1px solid rgba(0, 240, 255, 0.08)",
+                      }}
+                    >
+                      <Globe size={20} className="text-gray-500" />
+                    </div>
+                    <span className="text-base font-medium text-gray-400">
+                      {lang === "en" ? "Türkçe" : "English"}
+                    </span>
+                  </motion.button>
+                </div>
+              </motion.nav>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
     </>
   );
 }

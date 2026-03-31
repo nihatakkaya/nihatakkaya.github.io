@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-navy-900 text-gray-200`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-navy-900 text-gray-200 overflow-x-hidden`}
       >
         {children}
       </body>
