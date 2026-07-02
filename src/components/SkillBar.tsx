@@ -75,7 +75,6 @@ export default function SkillBar({ name, percentage, delay = 0 }: SkillBarProps)
           <SkillLogo name={name} />
           <span className="text-base font-semibold text-gray-200">{name}</span>
         </div>
-        <span className="text-base font-bold text-neon-cyan tabular-nums">{percentage}%</span>
       </div>
       <div className="h-3 bg-navy-700 rounded-full overflow-hidden">
         <motion.div

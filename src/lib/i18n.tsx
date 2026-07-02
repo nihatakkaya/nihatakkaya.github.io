@@ -103,13 +103,14 @@ const translations: Record<Lang, Translations> = {
         { name: "C# Programming", issuer: "Udemy", year: "2024" },
         { name: "ASP.NET Core MVC", issuer: "Udemy", year: "2024" },
         { name: "SQL Server & Database Design", issuer: "Udemy", year: "2024" },
+        { name: "Docker", issuer: "Udemy", year: "2024" },
       ],
     },
     contact: {
       title1: "Get in",
       title2: "Touch",
       subtitle: "Let's build something amazing together.",
-      footer: "Designed & Built by Nihat",
+      footer: "Designed & Built by Nihat Akkaya",
     },
   },
   tr: {
@@ -170,13 +171,14 @@ const translations: Record<Lang, Translations> = {
         { name: "C# Programlama", issuer: "Udemy", year: "2024" },
         { name: "ASP.NET Core MVC", issuer: "Udemy", year: "2024" },
         { name: "SQL Server & Veritabanı Tasarımı", issuer: "Udemy", year: "2024" },
+        { name: "Docker", issuer: "Udemy", year: "2024" },
       ],
     },
     contact: {
       title1: "İletişime",
       title2: "Geçin",
       subtitle: "Birlikte harika bir şeyler inşa edelim.",
-      footer: "Nihat tarafından tasarlandı ve geliştirildi",
+      footer: "Nihat Akkaya tarafından tasarlandı ve geliştirildi",
     },
   },
 };

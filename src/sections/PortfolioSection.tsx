@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Github, ExternalLink, AlertCircle } from "lucide-react";
+import { Github, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import SectionWrapper from "@/components/SectionWrapper";
 import { useLang } from "@/lib/i18n";
@@ -33,9 +33,47 @@ const languageColors: Record<string, string> = {
 
 const projectImages: Record<string, string> = {
   MarketOtomasyonu: "/images/market-otomasyonu.png",
-  "asp.net-mvc-sehir-tanitimi": "/images/sehir-tanitimi.png",
-  "Maze-Game": "/images/maze-game.png",
+  SehirTanitimWebP: "/images/sehir-tanitimi.png",
 };
+
+const featuredRepos: GitHubRepo[] = [
+  {
+    id: 1,
+    name: "MarketOtomasyonu",
+    full_name: "nihatakkaya/MarketOtomasyonu",
+    html_url: "https://github.com/nihatakkaya/MarketOtomasyonu",
+    description: null,
+    language: "C#",
+    stargazers_count: 0,
+    fork: false,
+    updated_at: "",
+    topics: [],
+  },
+  {
+    id: 2,
+    name: "SehirTanitimWebP",
+    full_name: "nihatakkaya/SehirTanitimWebP",
+    html_url: "https://github.com/nihatakkaya/SehirTanitimWebP",
+    description: null,
+    language: "HTML",
+    stargazers_count: 0,
+    fork: false,
+    updated_at: "",
+    topics: [],
+  },
+  {
+    id: 3,
+    name: "OfisServisSistemi",
+    full_name: "nihatakkaya/OfisServisSistemi",
+    html_url: "https://github.com/nihatakkaya/OfisServisSistemi",
+    description: null,
+    language: "C#",
+    stargazers_count: 0,
+    fork: false,
+    updated_at: "",
+    topics: [],
+  },
+];
 
 function RepoCard({ repo, index }: { repo: GitHubRepo; index: number }) {
   const image = projectImages[repo.name];
@@ -107,33 +145,10 @@ function RepoCard({ repo, index }: { repo: GitHubRepo; index: number }) {
   );
 }
 
-function FallbackUI({ texts }: { texts: { fallback: string; viewOnGithub: string } }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="glass-card glow-border rounded-2xl p-10 text-center max-w-md mx-auto"
-    >
-      <AlertCircle size={36} className="text-neon-cyan/50 mx-auto mb-5" />
-      <p className="text-gray-400 text-lg mb-5">{texts.fallback}</p>
-      <a
-        href="https://github.com/nihatakkaya"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-base font-medium text-neon-cyan border border-neon-cyan/30 hover:bg-neon-cyan/10 transition-all"
-      >
-        <Github size={18} />
-        {texts.viewOnGithub}
-      </a>
-    </motion.div>
-  );
-}
-
 function LoadingSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
-      {Array.from({ length: 6 }).map((_, i) => (
+      {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="glass-card glow-border rounded-2xl overflow-hidden animate-pulse">
           <div className="h-48 bg-navy-600/20" />
           <div className="p-7">
@@ -155,28 +170,27 @@ export default function PortfolioSection() {
   const { t } = useLang();
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function fetchRepos() {
       try {
-        const res = await fetch(
-          "https://api.github.com/users/nihatakkaya/repos?sort=updated&per_page=30"
+        const data = await Promise.all(
+          featuredRepos.map(async (fallbackRepo) => {
+            const res = await fetch(`https://api.github.com/repos/${fallbackRepo.full_name}`);
+            if (!res.ok) return fallbackRepo;
+
+            const repo: GitHubRepo = await res.json();
+            return {
+              ...fallbackRepo,
+              ...repo,
+              topics: repo.topics ?? fallbackRepo.topics,
+            };
+          })
         );
-        if (!res.ok) throw new Error("GitHub API error");
-        const data: GitHubRepo[] = await res.json();
 
-        const filtered = data
-          .filter((r) => !r.fork)
-          .sort(
-            (a, b) =>
-              new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-          )
-          .slice(0, 6);
-
-        setRepos(filtered);
+        setRepos(data);
       } catch {
-        setError(true);
+        setRepos(featuredRepos);
       } finally {
         setLoading(false);
       }
@@ -209,8 +223,7 @@ export default function PortfolioSection() {
       </div>
 
       {loading && <LoadingSkeleton />}
-      {error && <FallbackUI texts={{ fallback: t.portfolio.fallback, viewOnGithub: t.portfolio.viewOnGithub }} />}
-      {!loading && !error && (
+      {!loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
           {repos.map((repo, index) => (
             <RepoCard key={repo.id} repo={repo} index={index} />
@@ -218,7 +231,7 @@ export default function PortfolioSection() {
         </div>
       )}
 
-      {!loading && !error && (
+      {!loading && (
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

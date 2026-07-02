@@ -35,4 +35,9 @@ export const certifications = [
     issuer: "Udemy",
     year: "2024",
   },
+  {
+    name: "Docker",
+    issuer: "Udemy",
+    year: "2024",
+  },
 ];
