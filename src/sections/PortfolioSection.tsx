@@ -34,6 +34,7 @@ const languageColors: Record<string, string> = {
 const projectImages: Record<string, string> = {
   MarketOtomasyonu: "/images/market-otomasyonu.png",
   SehirTanitimWebP: "/images/sehir-tanitimi.png",
+  OfisServisSistemi: "/images/site_girisi.jpeg",
 };
 
 const featuredRepos: GitHubRepo[] = [
