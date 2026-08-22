@@ -35,7 +35,6 @@ interface Translations {
     certificationsLabel: string;
     alwaysLearning: string;
     degrees: { degree: string; institution: string; year: string; highlights: string[]; focusAreas: string[] }[];
-    certs: { name: string; issuer: string; year: string }[];
   };
   contact: {
     title1: string;
@@ -101,12 +100,6 @@ const translations: Record<Lang, Translations> = {
           focusAreas: ["C#", ".NET", "SQL", "Web Development", "Software Architecture"],
         },
       ],
-      certs: [
-        { name: "C# Programming", issuer: "Udemy", year: "2024" },
-        { name: "ASP.NET Core MVC", issuer: "Udemy", year: "2024" },
-        { name: "SQL Server & Database Design", issuer: "Udemy", year: "2024" },
-        { name: "Docker", issuer: "Udemy", year: "2024" },
-      ],
     },
     contact: {
       title1: "Get in",
@@ -169,12 +162,6 @@ const translations: Record<Lang, Translations> = {
           ],
           focusAreas: ["C#", ".NET", "SQL", "Web Geliştirme", "Yazılım Mimarisi"],
         },
-      ],
-      certs: [
-        { name: "C# Programlama", issuer: "Udemy", year: "2024" },
-        { name: "ASP.NET Core MVC", issuer: "Udemy", year: "2024" },
-        { name: "SQL Server & Veritabanı Tasarımı", issuer: "Udemy", year: "2024" },
-        { name: "Docker", issuer: "Udemy", year: "2024" },
       ],
     },
     contact: {

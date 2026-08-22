@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GraduationCap, Award, BookOpen, ChevronDown } from "lucide-react";
+import { GraduationCap, Award, ChevronDown } from "lucide-react";
+import Image from "next/image";
 import SectionWrapper from "@/components/SectionWrapper";
 import GlowCard from "@/components/GlowCard";
+import { certifications, getIssuerLogo } from "@/lib/certifications";
 import { useLang } from "@/lib/i18n";
 
 export default function EducationSection() {
@@ -134,35 +136,54 @@ export default function EducationSection() {
           </div>
         </div>
 
-        {/* Certifications Column — unchanged */}
+        {/* Certifications Column */}
         <div>
           <div className="flex items-center gap-3 mb-8">
             <Award className="text-neon-cyan" size={30} />
             <h3 className="text-2xl font-semibold text-white">{t.education.certificationsLabel}</h3>
           </div>
           <div className="space-y-5">
-            {t.education.certs.map((cert, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                viewport={{ once: true }}
-              >
-                <GlowCard className="flex items-center gap-5">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-blue/20 flex items-center justify-center flex-shrink-0">
-                    <BookOpen size={26} className="text-neon-cyan" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="font-semibold text-white text-base">{cert.name}</h4>
-                    <p className="text-sm text-gray-400 mt-0.5">{cert.issuer}</p>
-                  </div>
-                  <span className="ml-auto text-sm px-3 py-1 rounded-full bg-neon-cyan/10 text-neon-cyan whitespace-nowrap flex-shrink-0 font-medium">
-                    {cert.year}
-                  </span>
-                </GlowCard>
-              </motion.div>
-            ))}
+            {certifications.map((cert, index) => {
+              const issuerLogo = getIssuerLogo(cert.issuer);
+              const logoFrameClass = issuerLogo
+                ? "bg-white/95 p-2"
+                : "bg-gradient-to-br from-neon-cyan/20 to-neon-blue/20";
+
+              return (
+                <motion.div
+                  key={`${cert.issuer}-${cert.name}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.15 }}
+                  viewport={{ once: true }}
+                >
+                  <GlowCard className="flex min-h-[88px] items-center gap-5 px-5 py-4 sm:px-6">
+                    <div
+                      className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-neon-cyan/15 shadow-[0_0_18px_rgba(0,240,255,0.08)] ${logoFrameClass}`}
+                    >
+                      {issuerLogo ? (
+                        <Image
+                          src={issuerLogo.src}
+                          alt={issuerLogo.alt}
+                          width={48}
+                          height={48}
+                          className="h-full w-full object-contain"
+                        />
+                      ) : (
+                        <Award
+                          size={25}
+                          className="text-neon-cyan"
+                          aria-label={`${cert.issuer} certificate issuer`}
+                        />
+                      )}
+                    </div>
+                    <h4 className="min-w-0 flex-1 text-base font-semibold leading-snug text-white break-words">
+                      {cert.name}
+                    </h4>
+                  </GlowCard>
+                </motion.div>
+              );
+            })}
           </div>
 
           <motion.div

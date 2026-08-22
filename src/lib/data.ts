@@ -19,25 +19,4 @@ export const education = [
   },
 ];
 
-export const certifications = [
-  {
-    name: "C# Programming",
-    issuer: "Udemy",
-    year: "2024",
-  },
-  {
-    name: "ASP.NET Core MVC",
-    issuer: "Udemy",
-    year: "2024",
-  },
-  {
-    name: "SQL Server & Database Design",
-    issuer: "Udemy",
-    year: "2024",
-  },
-  {
-    name: "Docker",
-    issuer: "Udemy",
-    year: "2024",
-  },
-];
+export { certifications } from "./certifications";
