@@ -1,11 +1,3 @@
-export const skills = [
-  { name: "C#", percentage: 85 },
-  { name: ".NET", percentage: 80 },
-  { name: "SQL", percentage: 75 },
-  { name: "HTML", percentage: 80 },
-  { name: "CSS", percentage: 80 },
-];
-
 export const education = [
   {
     degree: "English Preparatory Program",

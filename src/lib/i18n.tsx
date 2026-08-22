@@ -17,6 +17,13 @@ interface Translations {
     title1: string;
     title2: string;
     description: string;
+    categories: {
+      backend: string;
+      data: string;
+      architecture: string;
+      devops: string;
+      frontend: string;
+    };
   };
   portfolio: {
     title1: string;
@@ -59,7 +66,14 @@ const translations: Record<Lang, Translations> = {
       title1: "My",
       title2: "Skills",
       description:
-        "I'm a passionate developer specializing in .NET ecosystem and web technologies. I build robust, scalable applications with clean architecture and modern best practices.",
+        "Backend-focused .NET developer building scalable web applications with modern database, architecture and containerization technologies.",
+      categories: {
+        backend: "Backend Development",
+        data: "Data & Persistence",
+        architecture: "Architecture & Realtime",
+        devops: "DevOps & Tools",
+        frontend: "Frontend",
+      },
     },
     portfolio: {
       title1: "My",
@@ -122,7 +136,14 @@ const translations: Record<Lang, Translations> = {
       title1: "",
       title2: "Yeteneklerim",
       description:
-        ".NET ekosistemi ve web teknolojilerinde uzmanlaşmış tutkulu bir geliştiriciyim. Temiz mimari ve modern en iyi uygulamalarla sağlam, ölçeklenebilir uygulamalar geliştiriyorum.",
+        "Modern veritabanı, yazılım mimarisi ve container teknolojileriyle ölçeklenebilir web uygulamaları geliştiren .NET backend odaklı bir geliştiriciyim.",
+      categories: {
+        backend: "Backend Geliştirme",
+        data: "Veri & Kalıcılık",
+        architecture: "Mimari & Gerçek Zamanlı Sistemler",
+        devops: "DevOps & Araçlar",
+        frontend: "Frontend",
+      },
     },
     portfolio: {
       title1: "",
