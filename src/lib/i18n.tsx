@@ -24,6 +24,7 @@ interface Translations {
     subtitle: string;
     viewAll: string;
     fallback: string;
+    empty: string;
     viewOnGithub: string;
     noDescription: string;
   };
@@ -67,6 +68,7 @@ const translations: Record<Lang, Translations> = {
       subtitle: "My latest projects from GitHub",
       viewAll: "View All Repositories",
       fallback: "Unable to load repositories right now.",
+      empty: "Pinned repositories will appear here after they sync from GitHub.",
       viewOnGithub: "View on GitHub",
       noDescription: "No description provided.",
     },
@@ -135,6 +137,7 @@ const translations: Record<Lang, Translations> = {
       subtitle: "GitHub'daki son projelerim",
       viewAll: "Tüm Projeleri Görüntüle",
       fallback: "Projeler şu anda yüklenemiyor.",
+      empty: "GitHub'dan senkronize edilen sabitlenmiş projeler burada görünecek.",
       viewOnGithub: "GitHub'da Görüntüle",
       noDescription: "Açıklama bulunmuyor.",
     },

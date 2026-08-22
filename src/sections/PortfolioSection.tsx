@@ -2,147 +2,131 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Github, ExternalLink } from "lucide-react";
+import { ExternalLink, Github, GitFork, Star } from "lucide-react";
 import Image from "next/image";
 import SectionWrapper from "@/components/SectionWrapper";
+import {
+  GITHUB_PINNED_DATA_URL,
+  GITHUB_PROFILE_URL,
+  parseGitHubPinnedData,
+  type PinnedRepository,
+} from "@/lib/githubProfile";
 import { useLang } from "@/lib/i18n";
 
-interface GitHubRepo {
-  id: number;
-  name: string;
-  full_name: string;
-  html_url: string;
-  description: string | null;
-  language: string | null;
-  stargazers_count: number;
-  fork: boolean;
-  updated_at: string;
-  topics: string[];
-}
+type LoadStatus = "loading" | "ready" | "empty" | "error";
 
-const languageColors: Record<string, string> = {
-  "C#": "#178600",
-  "C++": "#f34b7d",
-  JavaScript: "#f1e05a",
-  TypeScript: "#3178c6",
-  Python: "#3572A5",
-  HTML: "#e34c26",
-  CSS: "#563d7c",
-  Java: "#b07219",
-};
-
-const projectImages: Record<string, string> = {
-  MarketOtomasyonu: "/images/market-otomasyonu.png",
-  SehirTanitimWebP: "/images/sehir-tanitimi.png",
-  OfisServisSistemi: "/images/site_girisi.jpeg",
-};
-
-const featuredRepos: GitHubRepo[] = [
-  {
-    id: 1,
-    name: "MarketOtomasyonu",
-    full_name: "nihatakkaya/MarketOtomasyonu",
-    html_url: "https://github.com/nihatakkaya/MarketOtomasyonu",
-    description: null,
-    language: "C#",
-    stargazers_count: 0,
-    fork: false,
-    updated_at: "",
-    topics: [],
-  },
-  {
-    id: 2,
-    name: "SehirTanitimWebP",
-    full_name: "nihatakkaya/SehirTanitimWebP",
-    html_url: "https://github.com/nihatakkaya/SehirTanitimWebP",
-    description: null,
-    language: "HTML",
-    stargazers_count: 0,
-    fork: false,
-    updated_at: "",
-    topics: [],
-  },
-  {
-    id: 3,
-    name: "OfisServisSistemi",
-    full_name: "nihatakkaya/OfisServisSistemi",
-    html_url: "https://github.com/nihatakkaya/OfisServisSistemi",
-    description: null,
-    language: "C#",
-    stargazers_count: 0,
-    fork: false,
-    updated_at: "",
-    topics: [],
-  },
-];
-
-function RepoCard({ repo, index }: { repo: GitHubRepo; index: number }) {
-  const image = projectImages[repo.name];
+function ProjectImage({ repo }: { repo: PinnedRepository }) {
+  const [failed, setFailed] = useState(false);
+  const imageUrl = !failed ? repo.imageUrl : null;
 
   return (
-    <motion.a
-      href={repo.html_url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div className="relative w-full h-48 overflow-hidden bg-navy-800/80">
+      {imageUrl ? (
+        <Image
+          src={imageUrl}
+          alt={`${repo.name} preview`}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(0,240,255,0.16),transparent_32%),linear-gradient(135deg,rgba(13,18,36,0.95),rgba(10,14,26,0.9))]">
+          <Github size={58} className="text-neon-cyan/35" />
+        </div>
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-900/20 to-transparent" />
+    </div>
+  );
+}
+
+function RepoCard({ repo, index }: { repo: PinnedRepository; index: number }) {
+  const { t } = useLang();
+  const hasHomepage = Boolean(repo.homepageUrl && repo.homepageUrl !== repo.url);
+
+  return (
+    <motion.article
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
       whileHover={{ y: -6 }}
-      className="block glass-card glow-border glow-border-hover rounded-2xl overflow-hidden group cursor-pointer transition-all duration-300"
+      className="relative h-full glass-card glow-border glow-border-hover rounded-2xl overflow-hidden group cursor-pointer transition-all duration-300"
     >
-      {image && (
-        <div className="relative w-full h-48 overflow-hidden">
-          <Image
-            src={image}
-            alt={repo.name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-900/20 to-transparent" />
-        </div>
-      )}
+      <a
+        href={repo.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute inset-0 z-10"
+        aria-label={`${t.portfolio.viewOnGithub}: ${repo.name}`}
+      />
 
-      <div className="p-7">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
+      <ProjectImage repo={repo} />
+
+      <div className="relative z-20 p-7 flex h-[calc(100%-12rem)] min-h-64 flex-col pointer-events-none">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex min-w-0 items-center gap-3">
             <Github size={22} className="text-neon-cyan/70 flex-shrink-0" />
-            <h3 className="font-bold text-lg text-white group-hover:text-neon-cyan transition-colors">
+            <h3 className="font-bold text-lg text-white group-hover:text-neon-cyan transition-colors truncate">
               {repo.name}
             </h3>
           </div>
           <ExternalLink
             size={18}
-            className="text-gray-600 group-hover:text-neon-cyan/60 transition-colors flex-shrink-0"
+            className="text-gray-600 group-hover:text-neon-cyan/60 transition-colors flex-shrink-0 mt-1"
           />
         </div>
 
-        <div className="flex items-center gap-4">
-          {repo.language && (
+        <p className="text-sm leading-relaxed text-gray-400 mb-5 line-clamp-3 min-h-[4.5rem]">
+          {repo.description ?? t.portfolio.noDescription}
+        </p>
+
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-400 mb-5">
+          {repo.primaryLanguage && (
             <div className="flex items-center gap-2">
               <span
                 className="w-3.5 h-3.5 rounded-full"
-                style={{ backgroundColor: languageColors[repo.language] || "#8b949e" }}
+                style={{ backgroundColor: repo.primaryLanguage.color }}
               />
-              <span className="text-sm text-gray-400">{repo.language}</span>
+              <span>{repo.primaryLanguage.name}</span>
             </div>
           )}
-          {repo.topics.length > 0 && (
-            <div className="flex gap-2 overflow-hidden">
-              {repo.topics.slice(0, 2).map((topic) => (
-                <span
-                  key={topic}
-                  className="text-xs px-2.5 py-0.5 rounded-full bg-neon-cyan/10 text-neon-cyan/70 border border-neon-cyan/15"
-                >
-                  {topic}
-                </span>
-              ))}
-            </div>
+
+          <div className="flex items-center gap-1.5">
+            <Star size={15} className="text-neon-cyan/55" />
+            <span>{repo.stargazerCount}</span>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <GitFork size={15} className="text-neon-cyan/55" />
+            <span>{repo.forkCount}</span>
+          </div>
+        </div>
+
+        <div className="mt-auto flex flex-wrap items-center gap-2">
+          {repo.topics.slice(0, 3).map((topic) => (
+            <span
+              key={topic}
+              className="max-w-full truncate text-xs px-2.5 py-0.5 rounded-full bg-neon-cyan/10 text-neon-cyan/70 border border-neon-cyan/15"
+            >
+              {topic}
+            </span>
+          ))}
+
+          {hasHomepage && (
+            <a
+              href={repo.homepageUrl ?? undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pointer-events-auto ml-auto inline-flex items-center gap-1.5 text-xs font-medium text-neon-cyan/80 hover:text-neon-cyan transition-colors"
+            >
+              Demo
+              <ExternalLink size={13} />
+            </a>
           )}
         </div>
       </div>
-    </motion.a>
+    </motion.article>
   );
 }
 
@@ -157,8 +141,10 @@ function LoadingSkeleton() {
               <div className="w-6 h-6 rounded bg-navy-600/40" />
               <div className="h-5 bg-navy-600/40 rounded w-2/3" />
             </div>
+            <div className="h-16 bg-navy-600/20 rounded mb-5" />
             <div className="flex gap-3">
               <div className="h-4 bg-navy-600/20 rounded w-20" />
+              <div className="h-4 bg-navy-600/20 rounded w-14" />
             </div>
           </div>
         </div>
@@ -167,37 +153,52 @@ function LoadingSkeleton() {
   );
 }
 
+function PortfolioStateMessage({ message }: { message: string }) {
+  return (
+    <div className="glass-card glow-border rounded-2xl px-6 py-10 text-center text-gray-400">
+      <Github size={34} className="mx-auto mb-4 text-neon-cyan/45" />
+      <p>{message}</p>
+    </div>
+  );
+}
+
 export default function PortfolioSection() {
   const { t } = useLang();
-  const [repos, setRepos] = useState<GitHubRepo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [repos, setRepos] = useState<PinnedRepository[]>([]);
+  const [status, setStatus] = useState<LoadStatus>("loading");
 
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchRepos() {
       try {
-        const data = await Promise.all(
-          featuredRepos.map(async (fallbackRepo) => {
-            const res = await fetch(`https://api.github.com/repos/${fallbackRepo.full_name}`);
-            if (!res.ok) return fallbackRepo;
+        const response = await fetch(GITHUB_PINNED_DATA_URL, {
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+        });
 
-            const repo: GitHubRepo = await res.json();
-            return {
-              ...fallbackRepo,
-              ...repo,
-              topics: repo.topics ?? fallbackRepo.topics,
-            };
-          })
-        );
+        if (!response.ok) {
+          throw new Error(`GitHub pinned data request failed: ${response.status}`);
+        }
 
-        setRepos(data);
+        const data = parseGitHubPinnedData(await response.json());
+
+        if (!isMounted) return;
+
+        setRepos(data.repositories);
+        setStatus(data.repositories.length > 0 ? "ready" : "empty");
       } catch {
-        setRepos(featuredRepos);
-      } finally {
-        setLoading(false);
+        if (!isMounted) return;
+        setRepos([]);
+        setStatus("error");
       }
     }
 
     fetchRepos();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -210,7 +211,9 @@ export default function PortfolioSection() {
           viewport={{ once: true }}
           className="text-4xl sm:text-5xl font-bold mb-4"
         >
-          {t.portfolio.title1}{t.portfolio.title1 && " "}<span className="text-gradient">{t.portfolio.title2}</span>
+          {t.portfolio.title1}
+          {t.portfolio.title1 && " "}
+          <span className="text-gradient">{t.portfolio.title2}</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -223,16 +226,23 @@ export default function PortfolioSection() {
         </motion.p>
       </div>
 
-      {loading && <LoadingSkeleton />}
-      {!loading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
+      {status === "loading" && <LoadingSkeleton />}
+
+      {status === "ready" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7 items-stretch">
           {repos.map((repo, index) => (
             <RepoCard key={repo.id} repo={repo} index={index} />
           ))}
         </div>
       )}
 
-      {!loading && (
+      {status === "empty" && (
+        <PortfolioStateMessage message={t.portfolio.empty} />
+      )}
+
+      {status === "error" && <PortfolioStateMessage message={t.portfolio.fallback} />}
+
+      {status !== "loading" && (
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -241,7 +251,7 @@ export default function PortfolioSection() {
           className="text-center mt-12"
         >
           <a
-            href="https://github.com/nihatakkaya"
+            href={GITHUB_PROFILE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-base font-medium text-neon-cyan border border-neon-cyan/25 hover:border-neon-cyan/50 hover:bg-neon-cyan/5 hover:shadow-[0_0_25px_rgba(0,240,255,0.12)] transition-all duration-300"

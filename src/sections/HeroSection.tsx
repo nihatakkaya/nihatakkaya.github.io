@@ -1,14 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import Image from "next/image";
 import GlowButton from "@/components/GlowButton";
+import { GITHUB_AVATAR_URL } from "@/lib/githubProfile";
 import { useTypewriter } from "@/lib/hooks";
 import { useLang } from "@/lib/i18n";
 
 export default function HeroSection() {
   const { t } = useLang();
+  const [avatarFailed, setAvatarFailed] = useState(false);
 
   const typedText = useTypewriter(t.hero.roles, 80, 40, 2000);
 
@@ -39,14 +42,21 @@ export default function HeroSection() {
                 "0 0 25px rgba(0, 240, 255, 0.2), 0 0 50px rgba(0, 240, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.3)",
             }}
           >
-            <Image
-              src="/images/profile.png"
-              alt="Nihat Akkaya"
-              fill
-              sizes="(max-width: 640px) 160px, (max-width: 768px) 192px, 208px"
-              className="object-cover"
-              priority
-            />
+            {avatarFailed ? (
+              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-navy-800 to-navy-900 text-5xl font-bold text-neon-cyan">
+                NA
+              </div>
+            ) : (
+              <Image
+                src={GITHUB_AVATAR_URL}
+                alt="Nihat Akkaya"
+                fill
+                sizes="(max-width: 640px) 160px, (max-width: 768px) 192px, 208px"
+                className="object-cover"
+                priority
+                onError={() => setAvatarFailed(true)}
+              />
+            )}
           </motion.div>
         </motion.div>
 
