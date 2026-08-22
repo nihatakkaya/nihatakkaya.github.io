@@ -2,15 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, Wrench, FolderOpen, GraduationCap, Mail, Globe, Menu, X } from "lucide-react";
+import { Home, Wrench, Briefcase, FolderOpen, GraduationCap, Mail, Globe, Menu, X } from "lucide-react";
 import { useActiveSection } from "@/lib/hooks";
 import { useLang } from "@/lib/i18n";
 
-const iconMap = { Home, Wrench, FolderOpen, GraduationCap, Mail };
+const iconMap = { Home, Wrench, Briefcase, FolderOpen, GraduationCap, Mail };
 
 const navKeys = [
   { id: "home", icon: "Home" as const, key: "home" as const },
   { id: "skills", icon: "Wrench" as const, key: "skills" as const },
+  { id: "experience", icon: "Briefcase" as const, key: "experience" as const },
   { id: "portfolio", icon: "FolderOpen" as const, key: "portfolio" as const },
   { id: "education", icon: "GraduationCap" as const, key: "education" as const },
   { id: "contact", icon: "Mail" as const, key: "contact" as const },

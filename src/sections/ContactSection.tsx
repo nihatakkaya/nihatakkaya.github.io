@@ -15,7 +15,7 @@ const contacts = [
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/nihatakkayaa/?skipRedirect=true",
+    href: "https://www.linkedin.com/in/nihatakkayaa/",
     icon: Linkedin,
     color: "hover:text-blue-400 hover:border-blue-400/30",
     glowHover: "hover:shadow-[0_0_30px_rgba(96,165,250,0.2)]",

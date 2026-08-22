@@ -1,11 +1,11 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-type Lang = "en" | "tr";
+export type Lang = "en" | "tr";
 
 interface Translations {
-  nav: { home: string; skills: string; portfolio: string; education: string; contact: string };
+  nav: { home: string; skills: string; experience: string; portfolio: string; education: string; contact: string };
   hero: {
     greeting: string;
     roles: string[];
@@ -35,6 +35,17 @@ interface Translations {
     viewOnGithub: string;
     noDescription: string;
   };
+  experience: {
+    title: string;
+    subtitle: string;
+    labels: {
+      department: string;
+      location: string;
+      workModel: string;
+      technologies: string;
+    };
+    volunteer: string;
+  };
   education: {
     title: string;
     subtitle: string;
@@ -53,7 +64,14 @@ interface Translations {
 
 const translations: Record<Lang, Translations> = {
   en: {
-    nav: { home: "Home", skills: "Skills", portfolio: "Portfolio", education: "Education", contact: "Contact" },
+    nav: {
+      home: "Home",
+      skills: "Skills",
+      experience: "Experience",
+      portfolio: "Portfolio",
+      education: "Education",
+      contact: "Contact",
+    },
     hero: {
       greeting: "Hi, I'm",
       roles: ["Computer Engineering Student", "Full Stack Developer", "Software Developer"],
@@ -84,6 +102,18 @@ const translations: Record<Lang, Translations> = {
       empty: "Pinned repositories will appear here after they sync from GitHub.",
       viewOnGithub: "View on GitHub",
       noDescription: "No description provided.",
+    },
+    experience: {
+      title: "Experience",
+      subtitle:
+        "Hands-on experience across internships, volunteer development and real-world software projects.",
+      labels: {
+        department: "Department",
+        location: "Location",
+        workModel: "Work model",
+        technologies: "Technologies",
+      },
+      volunteer: "Volunteer",
     },
     education: {
       title: "Education",
@@ -123,7 +153,14 @@ const translations: Record<Lang, Translations> = {
     },
   },
   tr: {
-    nav: { home: "Ana Sayfa", skills: "Yetenekler", portfolio: "Portföy", education: "Eğitim", contact: "İletişim" },
+    nav: {
+      home: "Ana Sayfa",
+      skills: "Yetenekler",
+      experience: "Deneyim",
+      portfolio: "Portföy",
+      education: "Eğitim",
+      contact: "İletişim",
+    },
     hero: {
       greeting: "Merhaba, Ben",
       roles: ["Bilgisayar Mühendisliği Öğrencisi", "Full Stack Geliştirici", "Yazılım Geliştirici"],
@@ -154,6 +191,18 @@ const translations: Record<Lang, Translations> = {
       empty: "GitHub'dan senkronize edilen sabitlenmiş projeler burada görünecek.",
       viewOnGithub: "GitHub'da Görüntüle",
       noDescription: "Açıklama bulunmuyor.",
+    },
+    experience: {
+      title: "Deneyim",
+      subtitle:
+        "Stajlar, gönüllü yazılım geliştirme ve gerçek dünya projeleriyle edindiğim uygulamalı deneyimler.",
+      labels: {
+        department: "Birim",
+        location: "Konum",
+        workModel: "Çalışma modeli",
+        technologies: "Teknolojiler",
+      },
+      volunteer: "Gönüllü",
     },
     education: {
       title: "Eğitim",
@@ -208,6 +257,11 @@ const LangContext = createContext<LangContextType>({
 
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>("en");
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   return (
     <LangContext.Provider value={{ lang, setLang, t: translations[lang] }}>
       {children}
