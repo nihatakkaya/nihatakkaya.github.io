@@ -2,24 +2,24 @@
   "username": "nihatakkaya",
   "repositories": [
     {
-      "id": "nihatakkaya/MarketOtomasyonu",
+      "id": "R_kgDOPp7qWQ",
       "name": "MarketOtomasyonu",
       "nameWithOwner": "nihatakkaya/MarketOtomasyonu",
       "url": "https://github.com/nihatakkaya/MarketOtomasyonu",
-      "description": "C# ve MS SQL Server tabanli, stok takibi, satis yonetimi ve raporlama ozelliklerine sahip kapsamli market otomasyon sistemi.",
+      "description": "C# ve MS SQL Server tabanlı, stok takibi, satış yönetimi ve raporlama özelliklerine sahip kapsamlı market otomasyon sistemi.",
       "stargazerCount": 0,
       "forkCount": 0,
       "homepageUrl": null,
-      "updatedAt": "",
+      "updatedAt": "2026-05-03T17:16:14Z",
       "primaryLanguage": {
         "name": "C#",
         "color": "#178600"
       },
       "topics": [],
-      "imageUrl": "https://opengraph.githubassets.com/1/nihatakkaya/MarketOtomasyonu"
+      "imageUrl": "https://opengraph.githubassets.com/eb9b8d536ba015a09276fb97fb5b975c947f541ba703092388093975102c222f/nihatakkaya/MarketOtomasyonu"
     },
     {
-      "id": "nihatakkaya/OfisServisSistemi",
+      "id": "R_kgDOSSAdQQ",
       "name": "OfisServisSistemi",
       "nameWithOwner": "nihatakkaya/OfisServisSistemi",
       "url": "https://github.com/nihatakkaya/OfisServisSistemi",
@@ -27,47 +27,47 @@
       "stargazerCount": 1,
       "forkCount": 0,
       "homepageUrl": null,
-      "updatedAt": "",
+      "updatedAt": "2026-07-26T21:36:23Z",
       "primaryLanguage": {
         "name": "C#",
         "color": "#178600"
       },
       "topics": [],
-      "imageUrl": "https://opengraph.githubassets.com/1/nihatakkaya/OfisServisSistemi"
+      "imageUrl": "https://opengraph.githubassets.com/cd5ea832e6e12314ee9fe6708be5c3e1e614736db318d1eca24bf02962a24188/nihatakkaya/OfisServisSistemi"
     },
     {
-      "id": "nihatakkaya/SehirTanitimWebP",
-      "name": "SehirTanitimWebP",
-      "nameWithOwner": "nihatakkaya/SehirTanitimWebP",
-      "url": "https://github.com/nihatakkaya/SehirTanitimWebP",
-      "description": "ASP.NET (Core/MVC) mimarisi kullanilarak insa edilmis, veri tabani destekli ve dinamik icerik yonetimine sahip turizm/sehir rehberi web uygulamasi.",
-      "stargazerCount": 0,
-      "forkCount": 0,
-      "homepageUrl": null,
-      "updatedAt": "",
-      "primaryLanguage": {
-        "name": "JavaScript",
-        "color": "#f1e05a"
-      },
-      "topics": [],
-      "imageUrl": "https://opengraph.githubassets.com/1/nihatakkaya/SehirTanitimWebP"
-    },
-    {
-      "id": "nihatakkaya/SporcuGelisimPlatformu",
+      "id": "R_kgDOTjK11g",
       "name": "SporcuGelisimPlatformu",
       "nameWithOwner": "nihatakkaya/SporcuGelisimPlatformu",
       "url": "https://github.com/nihatakkaya/SporcuGelisimPlatformu",
-      "description": "Sporcu, antrenor, ebeveyn ve admin rolleri icin gelistirilen; sporcu profili, geri bildirim, kelime havuzu ve gelisim takibi yonetimi saglayan ASP.NET Core Blazor platformu.",
+      "description": "Sporcu, antrenör, ebeveyn ve admin rolleri için geliştirilen; sporcu profili, geri bildirim, kelime havuzu ve gelişim takibi yönetimi sağlayan ASP.NET Core Blazor platformu.",
       "stargazerCount": 0,
       "forkCount": 0,
       "homepageUrl": null,
-      "updatedAt": "",
+      "updatedAt": "2026-07-28T10:28:07Z",
       "primaryLanguage": {
         "name": "C#",
         "color": "#178600"
       },
       "topics": [],
-      "imageUrl": "https://opengraph.githubassets.com/1/nihatakkaya/SporcuGelisimPlatformu"
+      "imageUrl": "https://opengraph.githubassets.com/ee85d1ba2ff656f63f33cdbccde929aa222d4df33baf9a628462328713e28958/nihatakkaya/SporcuGelisimPlatformu"
+    },
+    {
+      "id": "R_kgDOTypaJA",
+      "name": "CafeMenu",
+      "nameWithOwner": "nihatakkaya/CafeMenu",
+      "url": "https://github.com/nihatakkaya/CafeMenu",
+      "description": "Kafe ve restoranların dijital menü, kullanıcı yetkilendirme ve marka görünümünü merkezi olarak yönetmesini sağlayan multi-tenant QR menü platformu.",
+      "stargazerCount": 0,
+      "forkCount": 0,
+      "homepageUrl": null,
+      "updatedAt": "2026-08-17T23:42:59Z",
+      "primaryLanguage": {
+        "name": "C#",
+        "color": "#178600"
+      },
+      "topics": [],
+      "imageUrl": "https://opengraph.githubassets.com/1146e335ccfa6077a9ac5c2e43a3c78da13ff9e9a780bb18df4cee6f2bf91285/nihatakkaya/CafeMenu"
     }
   ]
 }
