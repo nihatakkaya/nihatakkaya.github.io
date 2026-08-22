@@ -9,6 +9,8 @@ import GlowCard from "@/components/GlowCard";
 import { certifications, getIssuerLogo } from "@/lib/certifications";
 import { useLang } from "@/lib/i18n";
 
+const UNIVERSITY_LOGO_SRC = "/images/logos/subu.svg";
+
 export default function EducationSection() {
   const { t } = useLang();
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
@@ -61,23 +63,42 @@ export default function EducationSection() {
                   className="glass-card glow-border rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:border-neon-cyan/35 hover:shadow-[0_0_30px_rgba(0,240,255,0.15)]"
                 >
                   {/* Header — Always visible */}
-                  <div className="p-6 flex items-center justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between flex-wrap gap-2 mb-2">
-                        <h4 className="font-semibold text-white text-lg">{item.degree}</h4>
-                        <span className="text-sm px-3 py-1 rounded-full bg-neon-cyan/10 text-neon-cyan font-medium whitespace-nowrap flex-shrink-0">
-                          {item.year}
-                        </span>
-                      </div>
-                      <p className="text-base text-neon-cyan/70">{item.institution}</p>
+                  <div className="flex items-start gap-4 p-5 sm:p-6">
+                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl border border-neon-cyan/15 bg-white/95 p-2 shadow-[0_0_18px_rgba(0,240,255,0.08)] sm:h-16 sm:w-16">
+                      <Image
+                        src={UNIVERSITY_LOGO_SRC}
+                        alt={`${item.institution} logo`}
+                        width={64}
+                        height={64}
+                        className="h-full w-full object-contain"
+                      />
                     </div>
-                    <motion.div
-                      animate={{ rotate: expandedIndex === index ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex-shrink-0"
-                    >
-                      <ChevronDown size={22} className="text-neon-cyan/60" />
-                    </motion.div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="min-w-0">
+                          <h4 className="break-words text-lg font-semibold leading-snug text-white">
+                            {item.degree}
+                          </h4>
+                          <p className="mt-1 break-words text-base leading-snug text-neon-cyan/70">
+                            {item.institution}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-shrink-0 items-center justify-between gap-3 sm:justify-end">
+                          <span className="whitespace-nowrap rounded-full bg-neon-cyan/10 px-3 py-1 text-sm font-medium text-neon-cyan">
+                            {item.year}
+                          </span>
+                          <motion.div
+                            animate={{ rotate: expandedIndex === index ? 180 : 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="flex-shrink-0"
+                          >
+                            <ChevronDown size={22} className="text-neon-cyan/60" />
+                          </motion.div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Expanded Content */}
